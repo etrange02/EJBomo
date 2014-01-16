@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 
 import entity.ContactGroup;
 
-@Stateless(mappedName="DAOContactGroup")
+@Stateless(mappedName="DAOContactGroupBean")
 public class DAOContactGroup implements IDAOContactGroupLocal{
 
 	

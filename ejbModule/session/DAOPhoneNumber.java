@@ -2,7 +2,7 @@ package session;
 
 import javax.ejb.Stateless;
 
-@Stateless(mappedName="DAOPhoneNumber")
+@Stateless(mappedName="DAOPhoneNumberBean")
 public class DAOPhoneNumber implements IDAOPhoneNumberLocal {
 
 }

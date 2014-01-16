@@ -10,7 +10,7 @@ import entity.Contact;
 import entity.ContactGroup;
 
 
-@Stateless(mappedName="DAOContact")
+@Stateless(mappedName="DAOContactBean")
 public class DAOContact implements IDAOContactLocal {
 
 	@PersistenceContext

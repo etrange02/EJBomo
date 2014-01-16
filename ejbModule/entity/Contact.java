@@ -7,8 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Contact {
 	private String firstname;
 	private String lastname;
@@ -29,6 +35,7 @@ public class Contact {
 		this.phones = new ArrayList<PhoneNumber>();
 	}
 
+	@ManyToMany
 	public List<ContactGroup> getBooks() {
 		return books;
 	}
@@ -37,6 +44,7 @@ public class Contact {
 		this.books = books;
 	}
 	
+	@OneToMany(mappedBy="contact")
 	public List<PhoneNumber> getPhones() {
 		return phones;
 	}
@@ -45,6 +53,7 @@ public class Contact {
 		this.phones = phones;
 	}
 
+	@ManyToOne
 	public Address getAddress() {
 		return address;
 	}
