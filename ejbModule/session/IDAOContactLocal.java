@@ -6,12 +6,29 @@ import javax.ejb.Local;
 
 import entity.Contact;
 import entity.ContactGroup;
-import entity.PhoneNumber;
 
 @Local
 public interface IDAOContactLocal {
-	public void createContact(String firstname, String lastname, String email, String city, String country, String street, String zip, ArrayList<PhoneNumber> phoneList, ArrayList<ContactGroup> cgList);
-	public void modifyContact(int id, String firstname, String lastname, String email);
-	public void removeContact(int id);
-	public Contact searchContact(String criteria);
+
+	public abstract void createContact(Contact contact);
+
+	public abstract void updateContact(Contact contact);
+
+	public abstract void removeContact(int id);
+
+	public abstract ArrayList<Contact> GetAllContacts();
+
+	/// From type request
+	/// Search with member name
+	public abstract ArrayList<Contact> searchContactByName(String criteria);
+
+	/// Criteria type
+	/// Simple type
+	public abstract ArrayList<Contact> searchContactByPhone(String phone);
+
+	/// Example type request
+	public abstract ArrayList<ContactGroup> searchGroupByName(String criteria);
+
+	public abstract Contact searchContact(int id);
+
 }
