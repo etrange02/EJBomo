@@ -3,13 +3,18 @@ package session;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
+import javax.ejb.Stateless;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import entity.*;
+import entity.Address;
+import entity.Contact;
+import entity.ContactGroup;
+import entity.PhoneNumber;
 
-public class DAOContact {
+@Stateless(mappedName="DAOContact")
+public class DAOContact implements IDAOContactLocal {
 
 	public void createContact(String firstname, String lastname, String email, String city, String country, String street, String zip, ArrayList<PhoneNumber> phoneList, ArrayList<ContactGroup> cgList) {
 		Session session = null;
@@ -52,8 +57,8 @@ public class DAOContact {
 		}
 	}
 
-	/*public void modifyContact(int id, String firstname, String lastname, String email) {
-		Session session = null;
+	public void modifyContact(int id, String firstname, String lastname, String email) {
+		/*Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			Transaction tx = session.beginTransaction();
@@ -66,8 +71,8 @@ public class DAOContact {
 			session.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}*/
+		}*/
+	}
 
 	public void removeContact(int id) {
 		Session session = null;
@@ -109,4 +114,5 @@ public class DAOContact {
 		}
 		return contact;
 	}
+
 }

@@ -1,5 +1,11 @@
 package entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class PhoneNumber {
 	private Integer id;
 	private String phoneKind;
@@ -19,6 +25,7 @@ public class PhoneNumber {
 		this.contact = contact;
 	}
 	
+	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	public Integer getId() {
 		return id;
 	}

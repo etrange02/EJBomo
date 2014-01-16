@@ -3,6 +3,12 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Contact {
 	private String firstname;
 	private String lastname;
@@ -71,6 +77,7 @@ public class Contact {
 		this.email = email;
 	}
 
+	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	public Integer getId() {
 		return id;
 	}

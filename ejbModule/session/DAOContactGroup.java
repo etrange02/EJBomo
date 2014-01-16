@@ -2,9 +2,12 @@ package session;
 
 import java.util.ArrayList;
 
+import javax.ejb.Stateless;
+
 import entity.ContactGroup;
 
-public class DAOContactGroup {
+@Stateless(mappedName="DAOContactGroup")
+public class DAOContactGroup implements IDAOContactGroupLocal{
 
 	public ArrayList<ContactGroup> getGroups() {
 		ArrayList<ContactGroup> cgList = new ArrayList<ContactGroup>();

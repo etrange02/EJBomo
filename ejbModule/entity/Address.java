@@ -1,5 +1,11 @@
 package entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Address {
 	
 	private int id;
@@ -21,6 +27,7 @@ public class Address {
 		this.country = country;
 	}
 	
+	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}
