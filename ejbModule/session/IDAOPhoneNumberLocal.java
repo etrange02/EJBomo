@@ -1,8 +1,8 @@
 package session;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
-@Local
+@Remote
 public interface IDAOPhoneNumberLocal {
 
 }

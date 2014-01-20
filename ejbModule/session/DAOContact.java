@@ -43,7 +43,15 @@ public class DAOContact implements IDAOContactLocal {
 	 * @see session.IDAOContactLocal_#GetAllContacts()
 	 */
 	public ArrayList<Contact> GetAllContacts() {
-		return null;
+		return (ArrayList<Contact>) em.createQuery("FROM Contact").getResultList();
+		/*em.find(Contact.class, arg1);
+		return (ArrayList<Contact>) getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
+			@Override
+			public ArrayList<Contact> doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.createQuery("from Contact");
+				return (ArrayList<Contact>) query.list();
+			}
+		});*/
 	}
 
 	/// From type request

@@ -2,12 +2,12 @@ package session;
 
 import java.util.ArrayList;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import entity.Contact;
 import entity.ContactGroup;
 
-@Local
+@Remote
 public interface IDAOContactLocal {
 
 	public abstract void createContact(Contact contact);

@@ -1,10 +1,10 @@
 package session;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import entity.ContactGroup;
 
-@Local
+@Remote
 public interface IDAOContactGroupLocal {
 	public void createContactGroup(final ContactGroup contactGroup);
 	public void updateContactGroup(final ContactGroup contactGroup);
