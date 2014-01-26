@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import entity.Contact;
@@ -53,18 +54,22 @@ public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 	/// Criteria type
 	/// Simple type
 	public ArrayList<Contact> searchContactByPhone(final String phone) {
-		return new ArrayList<Contact>();
-		/*return (ArrayList<Contact>) em.createQuery("from Contact as c where (from PhoneNumber as p where p.phoneNumber = ? ) in c.phones")
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
+		try {
+			ArrayList<PhoneNumber> list = (ArrayList<PhoneNumber>) em.createQuery("from PhoneNumber as pn where pn.phoneNumber = ?")
 				.setParameter(1, phone)
-				.getResultList();*/
-//		return (ArrayList<Contact>) this.getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
-//			@Override
-//			public ArrayList<Contact> doInHibernate(Session session) throws HibernateException, SQLException {
-//				return (ArrayList<Contact>) session.createCriteria(Contact.class).createCriteria("phones")
-//					.add(Restrictions.ilike("phoneNumber", phone))
-//					.list();
-//			}
-//		});
+				.getResultList();
+			
+			Iterator<PhoneNumber> iter = list.iterator();
+			while (iter.hasNext()) {
+				PhoneNumber pn = iter.next();
+				contacts.add(pn.getContact());
+			}
+		} catch (NoResultException nre) {
+			return new ArrayList<Contact>();
+		}
+		
+		return contacts;
 	}
 
 	public Contact searchContact(final int id) {
