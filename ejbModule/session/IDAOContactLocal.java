@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.ejb.Local;
 
 import entity.Contact;
-import entity.ContactGroup;
 
 @Local
 public interface IDAOContactLocal {
@@ -16,7 +15,7 @@ public interface IDAOContactLocal {
 
 	public abstract void removeContact(int id);
 
-	public abstract ArrayList<Contact> GetAllContacts();
+	public abstract ArrayList<Contact> getAllContacts();
 
 	/// From type request
 	/// Search with member name

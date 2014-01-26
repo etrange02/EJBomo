@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.ejb.Stateless;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,7 @@ import entity.PhoneNumber;
 
 
 @Stateless(mappedName="DAOContactBean")
+@WebService(endpointInterface="session.IDAOContactRemote")
 public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 
 	@PersistenceContext
@@ -38,7 +40,7 @@ public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 		em.remove(em.find(Contact.class, id));
 	}
 	
-	public ArrayList<Contact> GetAllContacts() {
+	public ArrayList<Contact> getAllContacts() {
 		return (ArrayList<Contact>) em.createQuery("select object(c) from Contact as c").getResultList();
 	}
 
@@ -83,6 +85,15 @@ public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 			pn.getPhoneKind();
 		
 		return c;
+	}
+
+
+	public String getFriendName(final int id) {
+		try {
+			return em.find(Contact.class, id).getFirstname();
+		} catch (NoResultException nre) {
+			return "";
+		}
 	}
 }
 
