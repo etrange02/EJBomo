@@ -26,8 +26,5 @@ public interface IDAOContactLocal {
 	/// Simple type
 	public abstract ArrayList<Contact> searchContactByPhone(String phone);
 
-	/// Example type request
-	public abstract ArrayList<ContactGroup> searchGroupByName(String criteria);
-
 	public abstract Contact searchContact(int id);
 }

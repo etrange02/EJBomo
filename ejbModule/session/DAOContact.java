@@ -52,13 +52,10 @@ public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 	
 	/// Criteria type
 	/// Simple type
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#searchContactByPhone(java.lang.String)
-	 */
 	public ArrayList<Contact> searchContactByPhone(final String phone) {
-		return null;
-		/*return (ArrayList<Contact>) em.createQuery("from Contact as c where c.phones contains (from PhoneNumber as p where p.phoneNumber = ? )")
-				.setParameter(0, phone)
+		return new ArrayList<Contact>();
+		/*return (ArrayList<Contact>) em.createQuery("from Contact as c where (from PhoneNumber as p where p.phoneNumber = ? ) in c.phones")
+				.setParameter(1, phone)
 				.getResultList();*/
 //		return (ArrayList<Contact>) this.getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
 //			@Override
@@ -68,34 +65,6 @@ public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 //					.list();
 //			}
 //		});
-	}
-	
-	/// Example type request
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#searchGroupByName(java.lang.String)
-	 */
-	public ArrayList<ContactGroup> searchGroupByName(final String criteria) {
-//		return (ArrayList<ContactGroup>) this.getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<ContactGroup>>() {
-//			@Override
-//			public ArrayList<ContactGroup> doInHibernate(Session session) throws HibernateException, SQLException {				
-//				ContactGroup contactGroup = new ContactGroup();
-//				contactGroup.setGroupName(criteria);
-//				ArrayList<ContactGroup> groups = 
-//						(ArrayList<ContactGroup>) session.createCriteria(ContactGroup.class)
-//						.add(Example.create(contactGroup).excludeProperty("groupId").excludeProperty("contacts").excludeProperty("version").ignoreCase().enableLike())
-//						.list();
-//				if (groups != null) {
-//					Iterator<ContactGroup> iter = groups.iterator();
-//					while (iter.hasNext()) {
-//						Iterator<Contact> it = iter.next().getContacts().iterator();
-//						while (it.hasNext())
-//							it.next().getFirstname();
-//					}
-//				}
-//				return groups;
-//			}
-//		});
-		return null;
 	}
 
 	public Contact searchContact(final int id) {

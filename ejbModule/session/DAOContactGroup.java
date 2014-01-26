@@ -1,10 +1,14 @@
 package session;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import entity.Contact;
 import entity.ContactGroup;
 
 @Stateless(mappedName="DAOContactGroupBean")
@@ -23,36 +27,26 @@ public class DAOContactGroup implements IDAOContactGroupRemote, IDAOContactGroup
 	
 	public ContactGroup searchContactGroup(final String criteria) {
 		try {
-			return (ContactGroup) em.createQuery("FROM ContactGroup as cg WHERE groupName = ?")
+			ArrayList<ContactGroup> contactGroups = (ArrayList<ContactGroup>) em.createQuery("FROM ContactGroup as cg WHERE groupName = ?")
 					.setParameter(1, criteria)
-					.getSingleResult();
+					.getResultList();
+			if (contactGroups.isEmpty()) {
+				return null;
+			}
+			ContactGroup contactGroup = contactGroups.get(0);
+			Iterator<Contact> it = contactGroup.getContacts().iterator();
+			while(it.hasNext()) {
+				Contact c = it.next();
+				if (c != null) {
+					Iterator<ContactGroup> iter = c.getBooks().iterator();
+					while (iter.hasNext())
+						iter.next().getGroupId();
+				}
+			}			
+			return contactGroup;
 		} catch (NoResultException nre) {
 			return null;
 		}
-//		return (ContactGroup) this.getHibernateTemplate().execute(new HibernateCallback<ContactGroup>() {
-//			@Override
-//			public ContactGroup doInHibernate(Session session) throws HibernateException, SQLException {
-//				ArrayList<ContactGroup> contactGroups =
-//						(ArrayList<ContactGroup>) session.createCriteria(ContactGroup.class)
-//						.add(Restrictions.ilike("groupName", criteria)).list();
-//				
-//				if (contactGroups.isEmpty()) {
-//					return null;
-//				}
-//					
-//				ContactGroup contactGroup = contactGroups.get(0);
-//				Iterator<Contact> it = contactGroup.getContacts().iterator();
-//				while(it.hasNext()) {
-//					Contact c = it.next();
-//					if (c != null) {
-//						Iterator<ContactGroup> iter = c.getBooks().iterator();
-//						while (iter.hasNext())
-//							iter.next().getGroupId();
-//					}
-//				}			
-//				return contactGroup;
-//			}
-//		});
 	}
 	
 	public ContactGroup searchById(final int id)
