@@ -1,8 +1,10 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,14 +14,17 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public class Contact {
+public class Contact implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String firstname;
 	private String lastname;
 	private String email;
 	private Integer id;
+	@Version
 	private int version;
 	private List<ContactGroup> books;
 	private List<PhoneNumber> phones;
@@ -35,7 +40,7 @@ public class Contact {
 		this.phones = new ArrayList<PhoneNumber>();
 	}
 
-	@ManyToMany
+	@ManyToMany(cascade={CascadeType.MERGE})
 	public List<ContactGroup> getBooks() {
 		return books;
 	}
@@ -44,7 +49,7 @@ public class Contact {
 		this.books = books;
 	}
 	
-	@OneToMany(mappedBy="contact")
+	@OneToMany(mappedBy="contact", cascade={CascadeType.MERGE})
 	public List<PhoneNumber> getPhones() {
 		return phones;
 	}
@@ -53,7 +58,7 @@ public class Contact {
 		this.phones = phones;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade={CascadeType.MERGE})
 	public Address getAddress() {
 		return address;
 	}

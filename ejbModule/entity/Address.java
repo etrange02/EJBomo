@@ -1,18 +1,23 @@
 package entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 @Entity
-public class Address {
+public class Address implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String street;
 	private String city;
 	private String zip;
 	private String country;
+	@Version
 	private int version;
 	
 	public Address() {

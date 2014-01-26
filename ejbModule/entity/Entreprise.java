@@ -7,6 +7,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Entreprise extends Contact {
+	private static final long serialVersionUID = 1L;
 	private int numSiret;
 
 	public int getNumSiret() {

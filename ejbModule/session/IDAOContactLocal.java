@@ -2,12 +2,12 @@ package session;
 
 import java.util.ArrayList;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import entity.Contact;
 import entity.ContactGroup;
 
-@Remote
+@Local
 public interface IDAOContactLocal {
 
 	public abstract void createContact(Contact contact);
@@ -30,5 +30,4 @@ public interface IDAOContactLocal {
 	public abstract ArrayList<ContactGroup> searchGroupByName(String criteria);
 
 	public abstract Contact searchContact(int id);
-
 }

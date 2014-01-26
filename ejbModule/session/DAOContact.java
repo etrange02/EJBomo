@@ -1,6 +1,7 @@
 package session;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -8,68 +9,45 @@ import javax.persistence.PersistenceContext;
 
 import entity.Contact;
 import entity.ContactGroup;
+import entity.PhoneNumber;
 
 
 @Stateless(mappedName="DAOContactBean")
-public class DAOContact implements IDAOContactLocal {
+public class DAOContact implements IDAOContactRemote, IDAOContactLocal {
 
 	@PersistenceContext
 	EntityManager em;
 	
-
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#createContact(entity.Contact)
-	 */
 	public void createContact(final Contact contact) {
-
+		em.persist(contact.getAddress());
+		Iterator<ContactGroup> iter = contact.getBooks().iterator();
+		while (iter.hasNext())
+			em.persist(iter.next());
+		Iterator<PhoneNumber> iter2 = contact.getPhones().iterator();
+		while (iter2.hasNext())
+			em.persist(iter2.next());
+		em.persist(contact);
 	}
-	
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#updateContact(entity.Contact)
-	 */
+
 	public void updateContact(final Contact contact) {
-
+		em.merge(contact);
 	}
 
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#removeContact(int)
-	 */
 	public void removeContact(final int id) {
-		
-
+		em.remove(em.find(Contact.class, id));
 	}
 	
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#GetAllContacts()
-	 */
 	public ArrayList<Contact> GetAllContacts() {
-		return (ArrayList<Contact>) em.createQuery("FROM Contact").getResultList();
-		/*em.find(Contact.class, arg1);
-		return (ArrayList<Contact>) getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
-			@Override
-			public ArrayList<Contact> doInHibernate(Session session) throws HibernateException, SQLException {
-				Query query = session.createQuery("from Contact");
-				return (ArrayList<Contact>) query.list();
-			}
-		});*/
+		return (ArrayList<Contact>) em.createQuery("select object(c) from Contact as c").getResultList();
 	}
 
 	/// From type request
 	/// Search with member name
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#searchContactByName(java.lang.String)
-	 */
 	public ArrayList<Contact> searchContactByName(final String criteria) {
-//		return (ArrayList<Contact>) getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
-//			@Override
-//			public ArrayList<Contact> doInHibernate(Session session) throws HibernateException, SQLException {
-//				Query query = session.createQuery("from Contact as c where c.firstname = ? or c.lastname = ?");
-//				query.setString(0, criteria);
-//				query.setString(1, criteria);
-//				return (ArrayList<Contact>) query.list();
-//			}
-//		});
-		return null;
+		return (ArrayList<Contact>) em.createQuery("from Contact as c where c.firstname = ? or c.lastname = ?")
+				.setParameter(1, criteria)
+				.setParameter(2, criteria)
+				.getResultList();
 	}
 	
 	/// Criteria type
@@ -78,6 +56,10 @@ public class DAOContact implements IDAOContactLocal {
 	 * @see session.IDAOContactLocal_#searchContactByPhone(java.lang.String)
 	 */
 	public ArrayList<Contact> searchContactByPhone(final String phone) {
+		return null;
+		/*return (ArrayList<Contact>) em.createQuery("from Contact as c where c.phones contains (from PhoneNumber as p where p.phoneNumber = ? )")
+				.setParameter(0, phone)
+				.getResultList();*/
 //		return (ArrayList<Contact>) this.getHibernateTemplate().executeFind(new HibernateCallback<ArrayList<Contact>>() {
 //			@Override
 //			public ArrayList<Contact> doInHibernate(Session session) throws HibernateException, SQLException {
@@ -86,7 +68,6 @@ public class DAOContact implements IDAOContactLocal {
 //					.list();
 //			}
 //		});
-		return null;
 	}
 	
 	/// Example type request
@@ -116,30 +97,18 @@ public class DAOContact implements IDAOContactLocal {
 //		});
 		return null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see session.IDAOContactLocal_#searchContact(int)
-	 */
+
 	public Contact searchContact(final int id) {
-//		return (Contact) this.getHibernateTemplate().execute(new HibernateCallback<Contact>() {
-//			@Override
-//			public Contact doInHibernate(Session session) throws HibernateException, SQLException {
-//				ArrayList<Contact> contacts = (ArrayList<Contact>) session.createCriteria(Contact.class)
-//						.add(Restrictions.eq("id", id)).list();
-//				Contact contact = (Contact) (contacts.isEmpty() ? null : contacts.get(0));
-//				
-//				if (contact != null) {
-//					contact.getAddress().getStreet();
-//					for (ContactGroup cg: contact.getBooks())
-//						cg.getGroupName();
-//					for (PhoneNumber pn: contact.getPhones())
-//						pn.getPhoneKind();
-//					return contact;
-//				}
-//				return null;
-//			}
-//		});
-		return null;
+		Contact c = em.find(Contact.class, id);
+		if (c == null)
+			return null;
+		c.getAddress().getStreet();
+		for (ContactGroup cg: c.getBooks())
+			cg.getGroupName();
+		for (PhoneNumber pn: c.getPhones())
+			pn.getPhoneKind();
+		
+		return c;
 	}
 }
 

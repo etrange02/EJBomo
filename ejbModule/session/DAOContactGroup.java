@@ -1,24 +1,34 @@
 package session;
 
-import java.util.ArrayList;
-
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 import entity.ContactGroup;
 
 @Stateless(mappedName="DAOContactGroupBean")
-public class DAOContactGroup implements IDAOContactGroupLocal{
+public class DAOContactGroup implements IDAOContactGroupRemote, IDAOContactGroupLocal {
 
+	@PersistenceContext
+	EntityManager em;
 	
 	public void createContactGroup(final ContactGroup contactGroup) {
-		
+		em.persist(contactGroup);
 	}
 	
 	public void updateContactGroup(final ContactGroup contactGroup) {
-		
+		em.merge(contactGroup);
 	}
 	
 	public ContactGroup searchContactGroup(final String criteria) {
+		try {
+			return (ContactGroup) em.createQuery("FROM ContactGroup as cg WHERE groupName = ?")
+					.setParameter(1, criteria)
+					.getSingleResult();
+		} catch (NoResultException nre) {
+			return null;
+		}
 //		return (ContactGroup) this.getHibernateTemplate().execute(new HibernateCallback<ContactGroup>() {
 //			@Override
 //			public ContactGroup doInHibernate(Session session) throws HibernateException, SQLException {
@@ -43,6 +53,10 @@ public class DAOContactGroup implements IDAOContactGroupLocal{
 //				return contactGroup;
 //			}
 //		});
-		return null;
+	}
+	
+	public ContactGroup searchById(final int id)
+	{
+		return em.find(ContactGroup.class, id);
 	}
 }
